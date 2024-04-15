@@ -19,6 +19,7 @@
 
 package org.languagetool.tagging.disambiguation;
 
+import io.github.pixee.security.BoundedLineReader;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import org.apache.commons.lang3.StringUtils;
@@ -353,7 +354,7 @@ public class MultiWordChunker extends AbstractDisambiguator {
     try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))) {
       String line;
       separator = DEFAULT_SEPARATOR;
-      while ((line = reader.readLine()) != null) {
+      while ((line = BoundedLineReader.readLine(reader, 5_000_000)) != null) {
         line = line.trim();
         if (line.startsWith("#separatorRegExp=")) {
           separator = line.replace("#separatorRegExp=", "");

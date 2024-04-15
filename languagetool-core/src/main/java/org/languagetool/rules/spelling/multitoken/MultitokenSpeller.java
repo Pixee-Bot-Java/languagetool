@@ -18,6 +18,7 @@
  */
 package org.languagetool.rules.spelling.multitoken;
 
+import io.github.pixee.security.BoundedLineReader;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.similarity.LevenshteinDistance;
 import org.languagetool.JLanguageTool;
@@ -277,7 +278,7 @@ public class MultitokenSpeller {
       try (InputStream stream = JLanguageTool.getDataBroker().getFromResourceDirAsStream(filePath);
            BufferedReader reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))) {
         String lineOriginal;
-        while ((lineOriginal = reader.readLine()) != null) {
+        while ((lineOriginal = BoundedLineReader.readLine(reader, 5_000_000)) != null) {
           if (lineOriginal.isEmpty() || lineOriginal.charAt(0) == '#') { // ignore comments
             continue;
           }

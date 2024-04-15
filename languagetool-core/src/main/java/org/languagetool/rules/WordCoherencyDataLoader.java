@@ -18,6 +18,7 @@
  */
 package org.languagetool.rules;
 
+import io.github.pixee.security.BoundedLineReader;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import org.languagetool.JLanguageTool;
@@ -43,7 +44,7 @@ public class WordCoherencyDataLoader {
       BufferedReader br = new BufferedReader(reader)
     ) {
       String line;
-      while ((line = br.readLine()) != null) {
+      while ((line = BoundedLineReader.readLine(br, 5_000_000)) != null) {
         if (line.isEmpty() || line.charAt(0) == '#') {   // ignore comments
           continue;
         }
