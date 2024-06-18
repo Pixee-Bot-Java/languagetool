@@ -19,6 +19,7 @@
 
 package org.languagetool.openoffice;
 
+import io.github.pixee.security.ObjectInputFilters;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -217,6 +218,7 @@ public class CacheIO implements Serializable {
       if (file.exists() && !file.isDirectory()) {
         GZIPInputStream fileIn = new GZIPInputStream(new FileInputStream(file));
         ObjectInputStream in = new ObjectInputStream(fileIn);
+        ObjectInputFilters.enableObjectFilterIfUnprotected(in);
         allCaches = (AllCaches) in.readObject();
         in.close();
         fileIn.close();
@@ -508,6 +510,7 @@ public class CacheIO implements Serializable {
       try {
         FileInputStream fileIn = new FileInputStream(cacheMapFile);
         ObjectInputStream in = new ObjectInputStream(fileIn);
+        ObjectInputFilters.enableObjectFilterIfUnprotected(in);
         cacheMap = (CacheMap) in.readObject();
         if (DEBUG_MODE) {
           MessageHandler.printToLogFile("CacheIO: CacheFile: read cacheMap file: size=" + cacheMap.size());
@@ -774,6 +777,7 @@ public class CacheIO implements Serializable {
         if (file.exists() && !file.isDirectory()) {
           GZIPInputStream fileIn = new GZIPInputStream(new FileInputStream(file));
           ObjectInputStream in = new ObjectInputStream(fileIn);
+          ObjectInputFilters.enableObjectFilterIfUnprotected(in);
           boolean out = putAll((SpellCache) in.readObject());
           in.close();
           fileIn.close();
