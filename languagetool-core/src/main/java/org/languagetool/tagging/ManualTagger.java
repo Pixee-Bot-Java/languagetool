@@ -18,6 +18,7 @@
  */
 package org.languagetool.tagging;
 
+import io.github.pixee.security.BoundedLineReader;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import org.apache.commons.lang3.StringUtils;
@@ -92,7 +93,7 @@ public class ManualTagger implements WordTagger {
       String line;
       int lineCount = 0;
       String separator = DEFAULT_SEPARATOR;
-      while ((line = br.readLine()) != null) {
+      while ((line = BoundedLineReader.readLine(br, 5_000_000)) != null) {
         line = line.trim();
         lineCount++;
         if (line.startsWith("#separatorRegExp=")) {

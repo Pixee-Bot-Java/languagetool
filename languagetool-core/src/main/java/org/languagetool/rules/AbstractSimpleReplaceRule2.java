@@ -18,6 +18,7 @@
  */
 package org.languagetool.rules;
 
+import io.github.pixee.security.BoundedLineReader;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import org.apache.commons.lang3.StringUtils;
@@ -399,7 +400,7 @@ public abstract class AbstractSimpleReplaceRule2 extends Rule {
       for (URL filePath : getAllFilePaths()) {
         BufferedReader br = new BufferedReader(new InputStreamReader(filePath.openStream(), StandardCharsets.UTF_8));
         String line;
-        while ((line = br.readLine()) != null) {
+        while ((line = BoundedLineReader.readLine(br, 5_000_000)) != null) {
           line = line.trim();
           if (line.isEmpty() || line.charAt(0) == '#') { // ignore comments
             continue;
