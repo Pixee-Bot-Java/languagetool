@@ -18,6 +18,8 @@
  */
 package org.languagetool.openoffice;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -1446,7 +1448,7 @@ public class MultiDocumentsHandler {
                       sUrl = (String) prop.Value;
                     }
                   }
-                  URL url = sUrl == null? null : new URL(sUrl);
+                  URL url = sUrl == null? null : Urls.create(sUrl, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
                   MoreInfoDialogThread infoThread = new MoreInfoDialogThread(msg, error.aFullComment, rule, url,
                       messages, lt.getLanguage().getShortCodeWithCountryAndVariant());
                   infoThread.start();
