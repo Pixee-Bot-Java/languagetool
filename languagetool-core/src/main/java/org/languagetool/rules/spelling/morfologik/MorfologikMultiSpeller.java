@@ -19,6 +19,7 @@
 package org.languagetool.rules.spelling.morfologik;
 
 import com.google.common.cache.*;
+import io.github.pixee.security.BoundedLineReader;
 import morfologik.fsa.FSA;
 import morfologik.fsa.builders.CFSA2Serializer;
 import morfologik.fsa.builders.FSABuilder;
@@ -67,7 +68,7 @@ public class MorfologikMultiSpeller {
       private List<byte[]> getLines(BufferedReader br, String path, Language lang) throws IOException {
         List<byte[]> lines = new ArrayList<>();
         String originalLine;
-        while ((originalLine = br.readLine()) != null) {
+        while ((originalLine = BoundedLineReader.readLine(br, 5_000_000)) != null) {
           List<String> lineList;
           if (lang != null) {
             lineList = lang.prepareLineForSpeller(originalLine);
